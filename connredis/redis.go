@@ -4,6 +4,8 @@ import (
 	"errors"
 
 	"github.com/redis/go-redis/v9"
+
+	"github.com/worldline-go/conn/tlscfg"
 )
 
 type Config struct {
@@ -12,7 +14,7 @@ type Config struct {
 	UserName   string   `cfg:"username"`
 	Password   string   `cfg:"password"`
 
-	TLS TLSConfig `cfg:"tls"`
+	TLS tlscfg.TLSConfig `cfg:"tls"`
 }
 
 func New(cfg Config) (redis.UniversalClient, error) {

@@ -1,4 +1,4 @@
-package connredis
+package tlscfg
 
 import (
 	"crypto/tls"
