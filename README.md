@@ -6,6 +6,21 @@ Connection to resources.
 go get github.com/worldline-go/conn
 ```
 
+## Database
+
+| Database | Package                                        |
+| -------- | ---------------------------------------------- |
+| Postgres | github.com/worldline-go/conn/database/postgres |
+
+Postgres connection using `pgxpool`, this help for refresh connection when database is restarted.
+
+```go
+// "github.com/worldline-go/conn/database"
+// _ "github.com/worldline-go/conn/database/postgres"
+
+db, err := database.Connect(ctx, "pgx", "postgres://postgres@localhost:5432/postgres")
+```
+
 ## Redis
 
 Redis connection return `redis.UniversalClient` which is a client that can connect to multiple Redis servers.
@@ -13,13 +28,4 @@ Redis connection return `redis.UniversalClient` which is a client that can conne
 ```go
 // import "github.com/worldline-go/conn/connredis"
 client, err := connredis.New(connredis.Config{})
-```
-
-## Postgres
-
-Postgres connection using `pgxpool`, this help for refresh connection when database is restarted.
-
-```go
-// import "github.com/worldline-go/conn/database/postgres"
-db, err := postgres.Connect(ctx, "postgres://postgres@localhost:5432/postgres")
 ```
