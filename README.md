@@ -8,9 +8,9 @@ go get github.com/worldline-go/conn
 
 ## Database
 
-| Database | Package                                        |
-| -------- | ---------------------------------------------- |
-| Postgres | github.com/worldline-go/conn/database/postgres |
+| Database | Type | Package                                        |
+| -------- | ---- | ---------------------------------------------- |
+| Postgres | pgx  | github.com/worldline-go/conn/database/postgres |
 
 Postgres connection using `pgxpool`, this help for refresh connection when database is restarted.
 
