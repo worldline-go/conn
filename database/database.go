@@ -19,7 +19,16 @@ var ErrUnsupportedDBType = fmt.Errorf("unsupported database type")
 var DBConnections = make(map[string]func(ctx context.Context, dbType, dbDataSource string) (*sqlx.DB, error))
 
 // Connect attempts to connect to database server.
-func Connect(ctx context.Context, dbType, dbDataSource string) (*sqlx.DB, error) {
+func Connect(ctx context.Context, dbType, dbDataSource string, options ...Option) (*sqlx.DB, error) {
+	o := &option{
+		ConnMaxLifetime: ConnMaxLifetime,
+		MaxIdleConns:    MaxIdleConns,
+		MaxOpenConns:    MaxOpenConns,
+	}
+	for _, opt := range options {
+		opt(o)
+	}
+
 	var db *sqlx.DB
 	if connectFunc, ok := DBConnections[dbType]; ok {
 		var err error
@@ -37,9 +46,9 @@ func Connect(ctx context.Context, dbType, dbDataSource string) (*sqlx.DB, error)
 		}
 	}
 
-	db.SetConnMaxLifetime(ConnMaxLifetime)
-	db.SetMaxIdleConns(MaxIdleConns)
-	db.SetMaxOpenConns(MaxOpenConns)
+	db.SetConnMaxLifetime(o.ConnMaxLifetime)
+	db.SetMaxIdleConns(o.MaxIdleConns)
+	db.SetMaxOpenConns(o.MaxOpenConns)
 
 	return db, nil
 }
