@@ -18,6 +18,10 @@ var ErrUnsupportedDBType = fmt.Errorf("unsupported database type")
 
 var DBConnections = make(map[string]func(ctx context.Context, dbType, dbDataSource string) (*sqlx.DB, error))
 
+func ConnectWithConfig(ctx context.Context, cfg *Config, options ...Option) (*sqlx.DB, error) {
+	return Connect(ctx, cfg.Type, cfg.Datasource, options...)
+}
+
 // Connect attempts to connect to database server.
 func Connect(ctx context.Context, dbType, dbDataSource string, options ...Option) (*sqlx.DB, error) {
 	o := &option{
