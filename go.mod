@@ -5,7 +5,7 @@ go 1.24
 require (
 	github.com/jackc/pgx/v5 v5.7.5
 	github.com/jmoiron/sqlx v1.4.0
-	github.com/redis/go-redis/v9 v9.10.0
+	github.com/redis/go-redis/v9 v9.13.0
 	github.com/twmb/tlscfg v1.2.1
 )
 
