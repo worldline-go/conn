@@ -4,6 +4,7 @@ import "time"
 
 type Config struct {
 	Datasource string `cfg:"datasource" log:"-"`
+	Schema     string `cfg:"schema"`
 	Type       string `cfg:"type"`
 
 	ConnMaxLifetime time.Duration `cfg:"conn_max_lifetime" default:"15m"`
