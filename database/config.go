@@ -15,9 +15,10 @@ type Config struct {
 }
 
 type Migration struct {
-	Disabled   bool   `cfg:"disabled"`
-	Datasource string `cfg:"datasource" log:"-"`
-	Type       string `cfg:"type"`
-	Schema     string `cfg:"schema"`
-	Table      string `cfg:"table"`
+	Disabled   bool             `cfg:"disabled"`
+	Datasource string           `cfg:"datasource" log:"-"`
+	Type       string           `cfg:"type"`
+	Schema     string           `cfg:"schema"`
+	Table      string           `cfg:"table"`
+	Skip       map[string][]int `cfg:"skip"`
 }
