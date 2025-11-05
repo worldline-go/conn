@@ -8,18 +8,18 @@ go get github.com/worldline-go/conn
 
 ## Database
 
-| Database | Type | Package                                        |
-| -------- | ---- | ---------------------------------------------- |
-| Postgres | pgx  | github.com/worldline-go/conn/database/postgres |
-
-Postgres connection using `pgxpool`, this help for refresh connection when database is restarted.
+| Database | Type | Package                        |
+| -------- | ---- | ------------------------------ |
+| Postgres | pgx  | github.com/jackc/pgx/v5/stdlib |
 
 ```go
 // "github.com/worldline-go/conn/database"
-// _ "github.com/worldline-go/conn/database/postgres"
+// _ "github.com/jackc/pgx/v5/stdlib"
 
 db, err := database.Connect(ctx, "pgx", "postgres://postgres@localhost:5432/postgres")
 ```
+
+> Don't use `pgxpool` when connection to postgres causes stuck query, use just `stdlib` instead.
 
 ## Redis
 
