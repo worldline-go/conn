@@ -19,8 +19,6 @@ go get github.com/worldline-go/conn
 db, err := database.Connect(ctx, "pgx", "postgres://postgres@localhost:5432/postgres")
 ```
 
-> Don't use `pgxpool` when connection to postgres causes stuck query, use just `stdlib` instead.
-
 ## Redis
 
 Redis connection return `redis.UniversalClient` which is a client that can connect to multiple Redis servers.

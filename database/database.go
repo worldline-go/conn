@@ -2,10 +2,9 @@ package database
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
 	"time"
-
-	"github.com/jmoiron/sqlx"
 )
 
 var (
@@ -16,9 +15,9 @@ var (
 
 var ErrUnsupportedDBType = fmt.Errorf("unsupported database type")
 
-var DBConnections = make(map[string]func(ctx context.Context, dbType, dbDataSource string) (*sqlx.DB, error))
+var DBConnections = make(map[string]func(ctx context.Context, dbType, dbDataSource string) (*sql.DB, error))
 
-func ConnectWithConfig(ctx context.Context, cfg *Config) (*sqlx.DB, error) {
+func ConnectWithConfig(ctx context.Context, cfg *Config) (*sql.DB, error) {
 	opts := []Option{
 		WithConnMaxLifetime(cfg.ConnMaxLifetime),
 		WithMaxIdleConns(cfg.MaxIdleConns),
@@ -29,7 +28,7 @@ func ConnectWithConfig(ctx context.Context, cfg *Config) (*sqlx.DB, error) {
 }
 
 // Connect attempts to connect to database server.
-func Connect(ctx context.Context, dbType, dbDataSource string, opts ...Option) (*sqlx.DB, error) {
+func Connect(ctx context.Context, dbType, dbDataSource string, opts ...Option) (*sql.DB, error) {
 	o := &option{
 		ConnMaxLifetime: ConnMaxLifetime,
 		MaxIdleConns:    MaxIdleConns,
@@ -40,7 +39,7 @@ func Connect(ctx context.Context, dbType, dbDataSource string, opts ...Option) (
 		opt(o)
 	}
 
-	var db *sqlx.DB
+	var db *sql.DB
 	if connectFunc, ok := DBConnections[dbType]; ok {
 		var err error
 		db, err = connectFunc(ctx, dbType, dbDataSource)
@@ -51,9 +50,13 @@ func Connect(ctx context.Context, dbType, dbDataSource string, opts ...Option) (
 
 	if db == nil {
 		var err error
-		db, err = sqlx.ConnectContext(ctx, dbType, dbDataSource)
+		db, err = sql.Open(dbType, dbDataSource)
 		if err != nil {
-			return nil, fmt.Errorf("failed to connect to database: %w", err)
+			return db, err
+		}
+
+		if err = db.PingContext(ctx); err != nil {
+			return nil, err
 		}
 	}
 
